@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Libs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,15 +18,13 @@ namespace SeatingReminder
 {
     public sealed partial class MainWindow : Window
     {
-        private App m_Controller;
-        public WindowViewModel ViewModel { get; private set; }
+        private App mController;
 
         public MainWindow(App controller, WindowViewModel viewModel)
         {
-            m_Controller = controller;
+            mController = controller;
             DataContext = viewModel;
             InitializeComponent();
         }
-
     }
 }

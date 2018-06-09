@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Libs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Windows.Input;
 
 namespace SeatingReminder
 {
-    public sealed class WindowViewModel 
+    public sealed class WindowViewModel
     {
         public WindowViewModel()
         {
@@ -17,21 +18,13 @@ namespace SeatingReminder
 
         private void InitCommands()
         {
-            OnButtonClicked = new CommandHandler((param)=>ButtonClicked(param), true);
-            Hours = m_Hours.ToString("00");
-            Minutes = m_Minutes.ToString("00");
-            Seconds = m_Seconds.ToString("00");
+            OnButtonClicked = new CommandHandler((param) => ButtonClicked(param), true);
+            
         }
 
         private void ButtonClicked(string param)
         {
-            m_Seconds++;
-            m_Minutes++;
-            m_Hours++;
-
-            Hours = m_Hours.ToString("00");
-            Minutes = m_Minutes.ToString("00");
-            Seconds = m_Seconds.ToString("00");
+            Hours = "Test";
         }
 
         public ICommand OnButtonClicked
@@ -39,10 +32,6 @@ namespace SeatingReminder
             get;
             private set;
         }
-
-        private int m_Hours;
-        private int m_Minutes;
-        private int m_Seconds;
 
         public string Hours   { get; private set; }
         public string Minutes { get; private set; }
