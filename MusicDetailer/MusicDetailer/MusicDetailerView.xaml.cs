@@ -21,5 +21,20 @@ namespace MusicDetailer
         {
             InitializeComponent();
         }
+
+        private void OnPreviousClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnCommitChanges(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnNextClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

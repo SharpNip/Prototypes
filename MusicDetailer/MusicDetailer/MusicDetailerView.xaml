@@ -3,17 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MusicDetailer"
         mc:Ignorable="d"
         Title="Music Detailer" Width="450" Height="800">
+
+    <Window.Resources>
+        <ResourceDictionary Source="./Styles/StyleDictionnary.xaml"/>
+    </Window.Resources>
     
-    <Border Margin="5" CornerRadius="5" BorderThickness="1" BorderBrush="black">
+    <Border CornerRadius="5" BorderThickness="1" BorderBrush="black">
         
         <Grid >
             
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -23,27 +26,36 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="400"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="450"/>
             </Grid.RowDefinitions>
 
-            <TextBox Grid.Row="0" Grid.Column="1" BorderBrush="Black" Margin="5"/>
-            <TextBlock Text="Title" Grid.Row="0" Grid.Column="0" Margin="5"/>
-            <TextBox Grid.Row="1" Grid.Column="1" BorderBrush="Black" Margin="5"/>
-            <TextBlock Text="" Grid.Row="1" Grid.Column="0" Margin="5"/>
-            <TextBox Grid.Row="2" Grid.Column="1" BorderBrush="Black" Margin="5"/>
-            <TextBlock Text="" Grid.Row="2" Grid.Column="0" Margin="5"/>
-            <TextBox Grid.Row="3" Grid.Column="1" BorderBrush="Black" Margin="5"/>
-            <TextBlock Text="" Grid.Row="3" Grid.Column="0" Margin="5"/>
-            <TextBox Grid.Row="4" Grid.Column="1" BorderBrush="Black" Margin="5"/>
-            <TextBlock Text="" Grid.Row="4" Grid.Column="0" Margin="5"/>
-            <TextBox Grid.Row="5" Grid.Column="1" BorderBrush="Black" Margin="5"/>
-            <TextBlock Text="" Grid.Row="5" Grid.Column="0" Margin="5"/>
-            <TextBox Grid.Row="6" Grid.Column="1" BorderBrush="Black" Margin="5"/>
-            <TextBlock Text="" Grid.Row="6" Grid.Column="0" Margin="5"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource TagBox}"/>
+            <TextBlock Text="Title" Grid.Row="0" Grid.Column="0" Style="{StaticResource TagSection}" />
+            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource TagBox}"/>
+            <TextBlock Text="#" Grid.Row="1" Grid.Column="0" Style="{StaticResource TagSection}" />
+            <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource TagBox}"/>
+            <TextBlock Text="Artist" Grid.Row="2" Grid.Column="0" Style="{StaticResource TagSection}"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource TagBox}"/>
+            <TextBlock Text="Contributing Artists" Grid.Row="3" Grid.Column="0" Style="{StaticResource TagSection}"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource TagBox}"/>
+            <TextBlock Text="Album" Grid.Row="4" Grid.Column="0" Style="{StaticResource TagSection}"/>
+            <TextBox Grid.Row="5" Grid.Column="1" Style="{StaticResource TagBox}"/>
+            <TextBlock Text="Year" Grid.Row="5" Grid.Column="0" Style="{StaticResource TagSection}"/>
+            <TextBox Grid.Row="6" Grid.Column="1" Style="{StaticResource TagBox}"/>
+            <TextBlock Text="Genre" Grid.Row="6" Grid.Column="0" Style="{StaticResource TagSection}"/>
 
+            <StackPanel Margin="10" HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="7" Grid.ColumnSpan="2">
+                <Button Click="OnPreviousClicked" Content="Previous" Style="{StaticResource ButtonStyle}"/>
+                <Button Click="OnCommitChanges"  Content="Commit Changes" Style="{StaticResource ButtonStyle}"/>
+                <Button Click="OnNextClicked" Content="Next" Style="{StaticResource ButtonStyle}"/>
+            </StackPanel>
 
+            <Border Grid.ColumnSpan="2" Grid.Row="8" BorderThickness="2" BorderBrush="Black" Margin="5" CornerRadius="15">
+                <ListView Margin="5" ItemContainerStyle="{StaticResource SongItem}" ItemsSource="{Binding SongList}" >
 
-
+                </ListView>
+            </Border>
         </Grid>
     </Border>
 </Window>
