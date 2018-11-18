@@ -20,6 +20,8 @@ namespace SeatingReminder
         private long startTime = 0;
         private long stoppedTime;
 
+        private long NotificationTickTime;
+
         public WindowViewModel()
         {
             InitCommands();
@@ -93,10 +95,12 @@ namespace SeatingReminder
                 timer.Elapsed += (a, b) =>
                 {
                     timeElapsed = DateTime.UtcNow.Ticks - startTime;
-                    MilliSeconds = (timeElapsed % 10000000).ToString();
+                    MilliSeconds = (timeElapsed % 10000000).ToString("000");
                     Seconds      = ((timeElapsed / 10000000) % 60).ToString("00");
                     Minutes      = ((timeElapsed / 600000000) % 60).ToString("00");
                     Hours        = ((timeElapsed / 36000000000) % 24).ToString("00");
+
+
                 };
             }
             else
@@ -120,10 +124,32 @@ namespace SeatingReminder
             }
         }
 
+        private long GetTimeFromString(string value)
+        {
+            long analyzedNotifTick = 0;
+
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                
+            }
+
+            return analyzedNotifTick;
+        }
+
         public ICommand OnButtonClicked
         {
             get;
             private set;
+        }
+
+        public string NotificationTime
+        {
+            get { return Get<string>(); }
+            set
+            {
+                Set(value);                
+                NotificationTickTime = GetTimeFromString(value);               
+            }
         }
 
         public string Hours
