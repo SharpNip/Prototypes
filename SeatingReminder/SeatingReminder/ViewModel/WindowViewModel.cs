@@ -1,14 +1,18 @@
 ﻿using Libs;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SeatingReminder
 {
@@ -19,12 +23,15 @@ namespace SeatingReminder
         private long timeElapsed = 0;
         private long startTime = 0;
         private long stoppedTime;
+        private MediaPlayer soundPlayer;
 
         private long NotificationTickTime;
 
         public WindowViewModel()
         {
             InitCommands();
+            SoundFileName = "Select a Sound File";           
+
         }
 
         private void InitCommands()
@@ -54,10 +61,52 @@ namespace SeatingReminder
                     break;
                 }
 
+                case "SetSound":
+                {
+                    SetSound();
+                    break;
+                }
+
+                case "KillSound":
+                {
+                    KillSound();
+                    break;
+                }
+
                 default:
                 {
                     break;
                 }
+            }
+        }
+
+        private void KillSound()
+        {
+            if (soundPlayer != null)
+            {
+                soundPlayer.Stop();
+            }
+        }
+
+        private void SetSound()
+        {
+            OpenFileDialog fileBrowser = new OpenFileDialog()
+            {
+                 Filter = "Sound files | *.wav; *.mp3",
+            };
+
+            if ((bool)fileBrowser.ShowDialog())
+            {
+                if (soundPlayer != null)
+                {
+                    soundPlayer.Stop();
+                    soundPlayer.Close();
+                    soundPlayer = null;
+                }
+
+                soundPlayer = new MediaPlayer();
+                soundPlayer.Open(new Uri(fileBrowser.FileName));
+                SoundFileName = Path.GetFileNameWithoutExtension(fileBrowser.FileName);
             }
         }
 
@@ -100,12 +149,26 @@ namespace SeatingReminder
                     Minutes      = ((timeElapsed / 600000000) % 60).ToString("00");
                     Hours        = ((timeElapsed / 36000000000) % 24).ToString("00");
 
+                    if (NotificationTickTime != 0 && timeElapsed >= NotificationTickTime)
+                    {
+                        Console.WriteLine("Time Reached!");
+                        if (soundPlayer != null)
+                        {
+                            soundPlayer.Dispatcher.Invoke(() =>
+                            {
+                                soundPlayer.Volume = 0.5;
+                                soundPlayer.Play();
+                            });
+                        }
 
+                        ResetClock();
+                        StartClock();
+                    }
                 };
             }
             else
             {
-                TogglePauseClock();
+                timer.Enabled = true;
             }
         }
 
@@ -128,9 +191,9 @@ namespace SeatingReminder
         {
             long analyzedNotifTick = 0;
 
-            if (!string.IsNullOrWhiteSpace(value))
+            if (!string.IsNullOrWhiteSpace(value) && TimeSpan.TryParse(value, out TimeSpan time))
             {
-                
+                analyzedNotifTick = time.Ticks;
             }
 
             return analyzedNotifTick;
@@ -144,12 +207,21 @@ namespace SeatingReminder
 
         public string NotificationTime
         {
-            get { return Get<string>(); }
+            get
+            {
+                return TimeSpan.FromTicks(GetTimeFromString(Get<string>())).ToString();
+            }
             set
             {
                 Set(value);                
                 NotificationTickTime = GetTimeFromString(value);               
             }
+        }
+
+        public string SoundFileName
+        {
+            get { return Get<string>(); }
+            set { Set(value); }
         }
 
         public string Hours
