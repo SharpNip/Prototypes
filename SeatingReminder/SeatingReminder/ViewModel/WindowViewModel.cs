@@ -1,16 +1,9 @@
 ﻿using Libs;
+
 using Microsoft.Win32;
+
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Media;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -19,6 +12,7 @@ namespace SeatingReminder
     public sealed class WindowViewModel : ViewModelBase
     {
         private System.Timers.Timer timer;
+        public EventHandler OnClosed;
 
         private long timeElapsed = 0;
         private long startTime = 0;
@@ -30,54 +24,18 @@ namespace SeatingReminder
         public WindowViewModel()
         {
             InitCommands();
-            SoundFileName = "Select a Sound File";           
-
+            SoundFileName = "Select a Sound File";
+            ResetClock();
         }
 
         private void InitCommands()
         {
-            OnButtonClicked = new CommandHandler((param) => ButtonClicked(param), true);            
-        }
-
-        private void ButtonClicked(string param)
-        {
-            switch (param)
-            {
-                case "Start":
-                {
-                    StartClock();
-                    break;
-                }
-
-                case "Pause":
-                {
-                    TogglePauseClock();
-                    break;
-                }
-
-                case "Reset":
-                {
-                    ResetClock();
-                    break;
-                }
-
-                case "SetSound":
-                {
-                    SetSound();
-                    break;
-                }
-
-                case "KillSound":
-                {
-                    KillSound();
-                    break;
-                }
-
-                default:
-                {
-                    break;
-                }
-            }
+            StartClicked       = new CommandHandler((param) => StartClock(),           true);                        
+            PauseClicked       = new CommandHandler((param) => TogglePauseClock(),     true);            
+            ResetClicked       = new CommandHandler((param) => ResetClock(),           true);            
+            SelectAudioClicked = new CommandHandler((param) => SetSound(),             true);            
+            KillAudioClicked   = new CommandHandler((param) => KillSound(),            true);
+            CloseClicked       = new CommandHandler((param) => App.Current.Shutdown(), true);
         }
 
         private void KillSound()
@@ -92,7 +50,7 @@ namespace SeatingReminder
         {
             OpenFileDialog fileBrowser = new OpenFileDialog()
             {
-                 Filter = "Sound files | *.wav; *.mp3",
+                 Filter = "Sound files | *.wav; *.mp3; *.mid",
             };
 
             if ((bool)fileBrowser.ShowDialog())
@@ -106,6 +64,12 @@ namespace SeatingReminder
 
                 soundPlayer = new MediaPlayer();
                 soundPlayer.Open(new Uri(fileBrowser.FileName));
+                soundPlayer.MediaEnded += (a,b) =>
+                {
+                    soundPlayer.Stop();
+                };
+
+
                 SoundFileName = Path.GetFileNameWithoutExtension(fileBrowser.FileName);
             }
         }
@@ -180,11 +144,12 @@ namespace SeatingReminder
                 timer.Dispose();
                 timer = null;
 
-                MilliSeconds = "000";
-                Seconds      = "00";
-                Minutes      = "00";
-                Hours        = "00";
             }
+
+            MilliSeconds = "000";
+            Seconds      = "00";
+            Minutes      = "00";
+            Hours        = "00";
         }
 
         private long GetTimeFromString(string value)
@@ -199,11 +164,12 @@ namespace SeatingReminder
             return analyzedNotifTick;
         }
 
-        public ICommand OnButtonClicked
-        {
-            get;
-            private set;
-        }
+        public ICommand StartClicked       { get; private set; }
+        public ICommand PauseClicked       { get; private set; }
+        public ICommand ResetClicked       { get; private set; }
+        public ICommand SelectAudioClicked { get; private set; }
+        public ICommand KillAudioClicked   { get; private set; }
+        public ICommand CloseClicked       { get; private set; }
 
         public string NotificationTime
         {

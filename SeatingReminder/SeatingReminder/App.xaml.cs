@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Drawing;
+using System.Threading;
 using System.Windows;
+
+using WF = System.Windows.Forms;
 
 namespace SeatingReminder
 {
@@ -14,23 +13,55 @@ namespace SeatingReminder
 
         private WindowViewModel m_VMMainWindow;
         public WindowViewModel VMMainWindow { get => m_VMMainWindow ?? (m_VMMainWindow = new WindowViewModel()); }
+        private WF.NotifyIcon icon;
+        private Mutex mutex;
 
         public App()
         {
-            LoadResources();
+            bool isOwned = false;
+            mutex = new Mutex(false, "TimerApp", out isOwned);
+            if (isOwned)
+            {
+                icon = new WF.NotifyIcon()
+                {
+                    Icon = Icon.ExtractAssociatedIcon(@"D:\Coding\Repositoried Projects\Prototypes\SeatingReminder\SeatingReminder\Stainless_6.ico"),
+                    Visible = true,                    
+                };
 
-            SetMainWindow(new MainWindow(this, VMMainWindow));
+                icon.Click += OnNotifIconClicked;
+                m_MainWindow = new MainWindow(this, VMMainWindow);
+
+                VMMainWindow.OnClosed += (ob, ev) =>
+                {
+                    icon.Visible = false;
+                    icon.Dispose();
+                };
+
+                DisplayMainWindow();
+            }
         }
 
-        private void SetMainWindow(MainWindow mainWindow)
+        private void DisplayMainWindow()
         {
-            m_MainWindow = mainWindow;
             m_MainWindow.Show();
+            Rect rect = SystemParameters.WorkArea;
+            m_MainWindow.Left = rect.Right - m_MainWindow.Width;
+            m_MainWindow.Top = rect.Bottom - m_MainWindow.Height;
         }
 
-        private void LoadResources()
+        private void OnNotifIconClicked(object sender, EventArgs e)
         {
-            
+            if (m_MainWindow != null)
+            {
+                if (m_MainWindow.IsVisible)
+                {
+                    m_MainWindow.Hide();
+                }
+                else
+                {
+                    DisplayMainWindow();
+                }                
+            }
         }
     }
 }
