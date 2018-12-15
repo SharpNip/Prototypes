@@ -7,10 +7,10 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SeatingReminder")]
+[assembly: AssemblyTitle("Notification Intervaller")]
 [assembly: AssemblyDescription("Interval Timer made just for some German Furry")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("NoNameYet")]
+[assembly: AssemblyCompany("TBD")]
 [assembly: AssemblyProduct("SeatingReminder")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
