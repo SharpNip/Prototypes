@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Windows;
 
@@ -24,7 +25,7 @@ namespace SeatingReminder
             {
                 icon = new WF.NotifyIcon()
                 {
-                    Icon = Icon.ExtractAssociatedIcon(@"D:\Coding\Repositoried Projects\Prototypes\SeatingReminder\SeatingReminder\Stainless_6.ico"),
+                    Icon = new Icon(GetResourceStream(new Uri("pack://application:,,,/SeatingReminder;component/Stainless_6.ico")).Stream),
                     Visible = true,                    
                 };
 
