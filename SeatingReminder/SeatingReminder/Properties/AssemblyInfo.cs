@@ -11,7 +11,7 @@ using System.Windows;
 [assembly: AssemblyDescription("Interval Timer made just for some German Furry")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("TBD")]
-[assembly: AssemblyProduct("SeatingReminder")]
+[assembly: AssemblyProduct("NotificationIntervaller")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

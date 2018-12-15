@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeatingReminder", "SeatingReminder\SeatingReminder.csproj", "{F956AE3F-7F77-4178-9A24-C2CA179743FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoticationIntervaller", "SeatingReminder\NoticationIntervaller.csproj", "{F956AE3F-7F77-4178-9A24-C2CA179743FE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libs", "Libs\Libs.csproj", "{894242A8-3833-440C-974E-E4B5BC9CA4AF}"
 EndProject

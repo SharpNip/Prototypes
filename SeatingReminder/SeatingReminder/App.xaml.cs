@@ -6,7 +6,7 @@ using System.Windows;
 
 using WF = System.Windows.Forms;
 
-namespace SeatingReminder
+namespace NotificationIntervaller
 {
     public partial class App : Application
     {
@@ -25,7 +25,7 @@ namespace SeatingReminder
             {
                 icon = new WF.NotifyIcon()
                 {
-                    Icon = new Icon(GetResourceStream(new Uri("pack://application:,,,/SeatingReminder;component/Stainless_6.ico")).Stream),
+                    Icon = new Icon(GetResourceStream(new Uri("pack://application:,,,/NotificationIntervaller;component/Stainless_6.ico")).Stream),
                     Visible = true,                    
                 };
 

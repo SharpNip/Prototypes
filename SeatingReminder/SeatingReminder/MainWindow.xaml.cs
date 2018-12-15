@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace SeatingReminder
+namespace NotificationIntervaller
 {
     public sealed partial class MainWindow : Window
     {

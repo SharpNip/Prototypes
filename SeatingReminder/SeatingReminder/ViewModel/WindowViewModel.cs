@@ -7,7 +7,7 @@ using System.IO;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace SeatingReminder
+namespace NotificationIntervaller
 {
     public sealed class WindowViewModel : ViewModelBase
     {
